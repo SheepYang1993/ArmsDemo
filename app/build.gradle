@@ -1,0 +1,67 @@
+apply plugin: 'com.android.application'
+apply plugin: 'me.tatarka.retrolambda'
+
+android {
+    compileSdkVersion rootProject.ext.android["compileSdkVersion"]
+    buildToolsVersion rootProject.ext.android["buildToolsVersion"]
+    useLibrary 'org.apache.http.legacy'
+
+    compileOptions {
+        targetCompatibility JavaVersion.VERSION_1_8
+        sourceCompatibility JavaVersion.VERSION_1_8
+    }
+
+    defaultConfig {
+        applicationId "me.jessyan.mvparms.demo"
+        minSdkVersion rootProject.ext.android["minSdkVersion"]
+        targetSdkVersion rootProject.ext.android["targetSdkVersion"]
+        versionCode rootProject.ext.android["versionCode"]
+        versionName rootProject.ext.android["versionName"]
+        testInstrumentationRunner rootProject.ext.dependencies["androidJUnitRunner"]
+    }
+
+    buildTypes {
+        debug {
+            buildConfigField "boolean", "LOG_DEBUG", "true"//开启Debug模式
+            buildConfigField "boolean", "USE_CANARY", "true"//开启内存检测
+            minifyEnabled false//关闭混淆
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+        release {
+            buildConfigField "boolean", "LOG_DEBUG", "false"//关闭Debug模式
+            buildConfigField "boolean", "USE_CANARY", "false"//关闭内存检测
+            minifyEnabled true//开启混淆
+            shrinkResources true//删除无效的Resource
+            zipAlignEnabled true//混淆后的zip优化
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    lintOptions {//lint检查
+        disable 'InvalidPackage'//忽略检测无效包，也可以使用warning 'InvalidPackage'用警告代替报错
+        disable "ResourceType"//忽略检测资源类型不匹配
+        abortOnError false//报错不中断build
+    }
+}
+
+dependencies {
+    compile fileTree(dir: 'libs', include: ['*.jar'])
+    androidTestCompile(rootProject.ext.dependencies["espresso-core"], {
+        exclude group: 'com.android.support', module: 'support-annotations'
+        exclude group: 'com.google.code.findbugs'
+    })
+
+    compile('me.jessyan:arms:2.0.3', {
+        exclude group: 'me.jessyan:rxerrorhandler'
+    }) //使用Rxjava2
+    compile 'me.jessyan:rxerrorhandler:2.0.1'
+    compile rootProject.ext.dependencies["constraint-layout"]
+    annotationProcessor rootProject.ext.dependencies["butterknife-compiler"]
+    annotationProcessor rootProject.ext.dependencies["dagger2-compiler"]
+//依赖插件, annotationProcessor 是 AndroidStudio 自带并用来替换 APT
+    provided rootProject.ext.dependencies["javax.annotation"]//dagger2必须依赖jsr250 annotation
+    testCompile rootProject.ext.dependencies["junit"]
+    debugCompile rootProject.ext.dependencies["canary-debug"]
+    releaseCompile rootProject.ext.dependencies["canary-release"]
+    testCompile rootProject.ext.dependencies["canary-release"]
+}
