@@ -51,10 +51,7 @@ dependencies {
         exclude group: 'com.google.code.findbugs'
     })
 
-    compile('me.jessyan:arms:2.0.3', {
-        exclude group: 'me.jessyan:rxerrorhandler'
-    }) //使用Rxjava2
-    compile 'me.jessyan:rxerrorhandler:2.0.1'
+    compile 'me.jessyan:arms:2.0.3'
     compile rootProject.ext.dependencies["constraint-layout"]
     annotationProcessor rootProject.ext.dependencies["butterknife-compiler"]
     annotationProcessor rootProject.ext.dependencies["dagger2-compiler"]
