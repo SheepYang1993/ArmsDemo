@@ -40,12 +40,13 @@ public class TestActivity extends BaseActivity<TestPresenter> implements TestCon
 
     @Override
     public int initView(Bundle savedInstanceState) {
+        showMessage("dasdasdasdasdasas");
         return R.layout.activity_test; //如果你不需要框架帮你设置 setContentView(id) 需要自行设置,请返回 0
     }
 
     @Override
     public void initData(Bundle savedInstanceState) {
-
+        showMessage("dasdasdasdasdasas");
     }
 
 
