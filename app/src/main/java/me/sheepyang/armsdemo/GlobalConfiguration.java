@@ -27,6 +27,8 @@ import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import me.sheepyang.armsdemo.http.Api;
+import me.sheepyang.armsdemo.http.Service.CommonService;
+import me.sheepyang.armsdemo.http.Service.TestService;
 import okhttp3.Interceptor;
 import okhttp3.Request;
 import okhttp3.Response;
@@ -111,7 +113,7 @@ public class GlobalConfiguration implements ConfigModule {
 
     @Override
     public void registerComponents(Context context, IRepositoryManager repositoryManager) {
-//        repositoryManager.injectRetrofitService(CommonService.class, UserService.class);
+        repositoryManager.injectRetrofitService(CommonService.class, TestService.class);
 //        repositoryManager.injectCacheService(CommonCache.class);
     }
 

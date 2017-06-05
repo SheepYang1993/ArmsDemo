@@ -5,4 +5,15 @@
               android:layout_height="match_parent"
               android:orientation="vertical">
 
+    <EditText
+        android:id="@+id/edt_city"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:hint="请输入城市ID"/>
+
+    <Button
+        android:id="@+id/btn_weather"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="获取天气"/>
 </LinearLayout>

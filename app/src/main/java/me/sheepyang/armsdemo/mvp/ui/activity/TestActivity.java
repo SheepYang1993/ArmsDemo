@@ -3,24 +3,30 @@ package me.sheepyang.armsdemo.mvp.ui.activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.text.TextUtils;
+import android.view.View;
+import android.widget.EditText;
 
 import com.jess.arms.base.BaseActivity;
 import com.jess.arms.di.component.AppComponent;
 import com.jess.arms.utils.UiUtils;
 
+import butterknife.BindView;
+import butterknife.OnClick;
+import me.sheepyang.armsdemo.R;
 import me.sheepyang.armsdemo.di.component.DaggerTestComponent;
 import me.sheepyang.armsdemo.di.module.TestModule;
 import me.sheepyang.armsdemo.mvp.contract.TestContract;
 import me.sheepyang.armsdemo.mvp.presenter.TestPresenter;
 
-import me.sheepyang.armsdemo.R;
-
-
 import static com.jess.arms.utils.Preconditions.checkNotNull;
 
 
-public class TestActivity extends BaseActivity<TestPresenter> implements TestContract.View {
+public class TestActivity extends BaseActivity<TestPresenter> implements TestContract.View, View.OnClickListener {
 
+
+    @BindView(R.id.edt_city)
+    EditText mEdtCity;
 
     @Override
     public void setupActivityComponent(AppComponent appComponent) {
@@ -71,4 +77,26 @@ public class TestActivity extends BaseActivity<TestPresenter> implements TestCon
     }
 
 
+    @Override
+    @OnClick({R.id.btn_weather})
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.btn_weather:
+                if (!TextUtils.isEmpty(mEdtCity.getText().toString())) {
+                    int cityId = 0;
+                    try {
+                        cityId = Integer.valueOf(mEdtCity.getText().toString());
+                        mPresenter.getWeather(cityId);
+                    } catch (NumberFormatException e) {
+                        e.printStackTrace();
+                        showMessage("城市ID格式错误");
+                    }
+                } else {
+                    showMessage("请输入城市ID");
+                }
+                break;
+            default:
+                break;
+        }
+    }
 }

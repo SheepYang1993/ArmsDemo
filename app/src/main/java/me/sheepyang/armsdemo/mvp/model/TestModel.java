@@ -3,13 +3,14 @@ package me.sheepyang.armsdemo.mvp.model;
 import android.app.Application;
 
 import com.google.gson.Gson;
+import com.jess.arms.di.scope.ActivityScope;
 import com.jess.arms.integration.IRepositoryManager;
 import com.jess.arms.mvp.BaseModel;
 
-import com.jess.arms.di.scope.ActivityScope;
-
 import javax.inject.Inject;
 
+import io.reactivex.Observable;
+import me.sheepyang.armsdemo.http.Service.TestService;
 import me.sheepyang.armsdemo.mvp.contract.TestContract;
 
 
@@ -32,4 +33,9 @@ public class TestModel extends BaseModel implements TestContract.Model {
         this.mApplication = null;
     }
 
+    @Override
+    public Observable<String> getWeather(int cityId) {
+        return mRepositoryManager.obtainRetrofitService(TestService.class)
+                .getWeather(cityId);
+    }
 }
